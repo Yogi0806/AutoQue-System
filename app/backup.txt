@@ -1,0 +1,71 @@
+ model = pickle.load(open('dataset/model.pkl', 'rb'))
+                    vectorizer = pickle.load(open('dataset/vectorizer.pkl', 'rb'))
+                    reader = pd.read_csv(qb)
+                    X_new = vectorizer.transform(reader['question'])
+                    # Make predictions using the loaded model
+                    y_new_pred = model.predict(X_new)
+                    y_new_pred = np.array(y_new_pred)
+                    y_new_pred = y_new_pred.astype(int)
+                    # Add the predicted marks to the new_data DataFrame
+                    reader['predicted_marks'] = y_new_pred
+                    # Filter the new_data DataFrame based on predicted marks
+                    new_data_4 = reader[reader['predicted_marks'] == 4]
+                    new_data_5 = reader[reader['predicted_marks'] == 5]
+                    new_data_6 = reader[reader['predicted_marks'] == 6]
+                    # new_data_7 = reader[reader['predicted_marks'] == 7]
+                    # new_data_8 = reader[reader['predicted_marks'] == 8]
+                    # Select 2 questions for each of the marks using the head method
+                    # selected_data = pd.concat([new_data_8.sample(n=2, random_state=24), new_data_7.sample(n=2, random_state=24), new_data_6.sample(n=2, random_state=24), new_data_5.sample(n=2, random_state=24), new_data_4.sample(n=2, random_state=24)], axis=0)
+                    selected_data = pd.concat([new_data_6.sample(n=2, random_state=24),
+                     new_data_5.sample(n=2, random_state=24), 
+                     new_data_4.sample(n=2, random_state=24),
+                     new_data_5.sample(n=6, random_state=24)],
+                      axis=0)
+                    selected_list = []
+                    blooms_level = []
+                    for _,row in selected_data[['question']].iterrows():
+                        new_question_vectorized = blooms_vector.transform(row)
+                        predicted_blooms_level = blooms_model.predict(new_question_vectorized)[0]
+                        blooms_level.append(predicted_blooms_level)
+                    for _, row in selected_data[['question', 'predicted_marks']].iterrows():
+                        selected_dict = row.to_list()
+                        selected_list.append(selected_dict)
+                    print(selected_dict)
+                    qus = []
+                    [qus.extend([str(q), str(m)]) for q,m in selected_list]
+                    print(qus)
+                    filename = branch_name + "_"  + semester + "_" +  subject_name  + '_question_paper.csv'
+                    subject_data  = Subject_data(college_name = college_name, 
+                            branch_name = branch_name, 
+                            semester = semester, subject_name = subject_name,
+                            year = year, faculty = faculty, 
+                            qb = qb, 
+                            q1 = qus[0],q2 = qus[4],
+                            q3 = qus[8],q4 = qus[2],
+                            q5 = qus[6],q6 = qus[10],
+                            q7 = qus[12],q8 = qus[14],
+                            q9 = qus[16],q10 = qus[18],
+                            q11 = qus[20],q12 = qus[22],
+                            m1 = qus[1],m2 = qus[3],
+                            m3 = qus[5],m4 = qus[7],
+                            m5 = qus[9],m6 = qus[11],
+                            m7 = qus[13],m8 = qus[15],
+                            m9 = qus[17],m10 = qus[19],
+                            m11 = qus[21],m12 = qus[23],
+                            bl1 = blooms_level[0],
+                            bl2 = blooms_level[1],
+                            bl3 = blooms_level[2],
+                            bl4 = blooms_level[3],
+                            bl5 = blooms_level[4],
+                            bl6 = blooms_level[5],
+                            bl7 = blooms_level[6],
+                            bl8 = blooms_level[7],
+                            bl9 = blooms_level[8],
+                            bl10 = blooms_level[9],
+                            bl11 = blooms_level[10],
+                            bl12 = blooms_level[11],
+                            date = date)
+                    subject_data.save()
+
+                    # Save the selected data to a CSV file
+                    selected_data.to_csv(filename, index=False)

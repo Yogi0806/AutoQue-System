@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% block title %}Home{% endblock title %}
+{% block body %}
+<style>
+    /* CSS for full-screen video */
+    .carousel-item {
+        position: relative;
+        width: 100%;
+        height: 100vh; /* Set height of carousel to full viewport height */
+    }
+
+    .carousel-video {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover; /* Ensure the video covers the entire container */
+    }
+
+    .carousel-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: #fff;
+    }
+
+    /* Keyframe animation */
+    @keyframes slideInFromLeft {
+        0% {
+            transform: translateX(-100%);
+            opacity: 0;
+        }
+        100% {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+
+    /* Apply animation */
+    h2 {
+        opacity: 0;
+        animation: slideInFromLeft 1.5s ease-in-out forwards;
+        animation-delay: 0.5s;
+    }
+
+    h2:nth-child(2) {
+        animation-delay: 2s; /* Adjust delay for the second heading */
+    }
+    .questgen-text {
+    color: #fff; /* Default color */
+    font-size: 24px; /* Example font size */
+}
+
+.questgen-highlight {
+    color: #fb00ff; /* Your desired color for QuestGen */
+    /* Add any other styles you want for QuestGen */
+}
+
+</style>
+
+<!-- ======= Index Page Section ======= -->
+<section id="hero">
+    <div id="heroCarousel" data-bs-interval="5000" class="carousel slide carousel-fade" data-bs-ride="carousel">
+
+        <div class="carousel-inner" role="listbox">
+
+            <!-- Slide 1 -->
+            <div class="carousel-item active">
+                <video autoplay muted loop class="carousel-video">
+                    <source src="static/img/background.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <div class="carousel-container">
+                    <div class="container">
+                        <!-- <h2 class="animate__animated animate__fadeInDown">Welcome to</h2>
+                        <h2 class="animate__animated animate__fadeInDown">Question Paper Generator Software</h2> -->
+                        <h2 class="animate__animated animate__fadeInDown questgen-text">Welcome to <span class="questgen-highlight">QuestGen</span></h2>
+
+                        <h2 class="animate__animated animate__fadeInDown">Simplifying Question Paper Generation</h2>
+                        <a href="log_in" class="btn-get-started animate__animated animate__fadeInUp scrollto mx-2">Log In</a>
+                        <a href="register" class="btn-get-started animate__animated animate__fadeInUp scrollto mx-2">Register</a>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</section><!-- Index Page Hero -->
+{% endblock body %}

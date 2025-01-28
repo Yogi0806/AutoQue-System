@@ -1,0 +1,55 @@
+import datetime
+from django import forms
+from django.core.validators import MinValueValidator
+
+class question_paper_form(forms.Form):
+    college = [
+        ('Pune Vidyarthi Grihas College of Engineering & S. S. Dhamankar Institute of Management, Nashik', 'Pune Vidyarthi Grihas College of Engineering & S. S. Dhamankar Institute of Management, Nashik')
+    ]
+
+    dept = [
+        ('Computer Engineering', 'Computer Engineering'), 
+    ]
+
+    sem = [
+        ('SEM I', 'SEM I'), 
+        ('SEM II', 'SEM II'),  
+    ]
+
+    year = [
+        ('First Year', 'First Year'), 
+        ('Second Year', 'Second Year'),  
+        ('ThirdYear', 'Third Year'), 
+        ('Fourth Year', 'Fourth Year'), 
+    ]
+
+    format_ = [
+        ('30 Marks', '30 Marks'),
+        ('70 Marks', '70 Marks')
+    ]
+    sets = [
+        ('1', '1'),
+        ('2', '2'),
+        ('3', '3'),
+        ('4', '4'),
+        ('5', '5')
+    ]
+
+    number_of_sets = forms.ChoiceField(widget=forms.Select(attrs={'class': "form-control"}), choices=sets)
+    paper_format = forms.ChoiceField(widget=forms.Select(attrs={'class': "form-control"}), choices=format_)
+    college_name = forms.ChoiceField(widget=forms.Select(attrs={'class': "form-control"}), choices=college)
+    branch_name = forms.ChoiceField(widget=forms.Select(attrs={'class': "form-control"}), choices=dept)
+    year = forms.ChoiceField(widget=forms.Select(attrs={'class': "form-control"}), choices=year)
+    semester = forms.ChoiceField(widget=forms.Select(attrs={'class':"form-control"}), choices=sem)
+    faculty = forms.CharField(widget=forms.TextInput(
+                                attrs={'class':"form-control", 
+                                        'type':'text', 
+                                        'placeholder':'Enter Faculty Name'}),
+                                            required=True)
+    subject_name = forms.CharField(widget=forms.TextInput(
+                                attrs={'class':"form-control",
+                                        'type':'text', 
+                                        'placeholder':'Enter Subject Name'}),
+                                            required=True)
+    date = forms.DateField(widget=forms.DateInput(attrs={'class':"form-control", 'type':'date'}), validators=[MinValueValidator(limit_value=datetime.date.today(), message="Invalid date. Please select a date starting from today.")])
+    qb = forms.FileField(widget=forms.FileInput(attrs={'class':"form-control", 'type':'file', 'placeholder':'Question Bank'}), required=True)
